@@ -1,1 +1,1 @@
-# alg-project
+# ALG I: PROJECT
