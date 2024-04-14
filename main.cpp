@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <queue>
+#include <algorithm>
 
 using namespace std;
 
@@ -28,19 +29,18 @@ void read_data( ifstream& input_file, vector<char>& height_map,pair<int, int>& s
     }
 }
 
-int BFS ( vector<char>& height_map, pair<int, int> start, pair<int, int> end, int m, int n )
+vector<pair<int, int>> BFS ( vector<char>& height_map, pair<int, int> start, pair<int, int> end, int m, int n )
 {
     // initialize queue
     queue<pair<int, int>> q;
     vector<bool> visited ( m * n, false );
 
-    // initialize distances
-    vector<int> distances ( m * n, -1 );
+    // initialize previously visited nodes
+    vector<pair<int, int>> previous ( m * n, {-1, -1} );
 
     // add start to the queue
     q.push( start );
     visited[ start.first * n + start.second ] = true;
-    distances[ start.first * n + start.second ] = 0;
 
     // moves: up, down, left, right
     vector<pair<int, int>> moves = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
@@ -51,7 +51,14 @@ int BFS ( vector<char>& height_map, pair<int, int> start, pair<int, int> end, in
 
         // if at end, return distance
         if ( current == end ) {
-            return distances[ current.first * n + current.second ];
+            vector<pair<int, int>> path;
+            while ( current != start ) {
+                path.push_back(current);
+                current = previous[ current.first * n + current.second ];
+            }
+            path.push_back(start);
+            reverse( path.begin(), path.end() );
+            return path;
         }
 
         // otherwise process neighbours
@@ -69,13 +76,13 @@ int BFS ( vector<char>& height_map, pair<int, int> start, pair<int, int> end, in
                 
                 q.push( {row, col} ); // add to the queue
                 visited[ new_idx ] = true; // mark as visited
-                distances[ new_idx ] = distances[ curr_idx ] + 1; // update distances
+                previous[ new_idx ] = current; // update previous node
             }
         }
     }
 
-    // return -1 if not found
-    return -1;
+    // return empty vector if not found
+    return {};
 }
 
 
@@ -93,8 +100,8 @@ int main()
 
     read_data( input_file, height_map, start, end, m, n );
 
-    int shortest_path = BFS( height_map, start, end, m, n );
-    cout << shortest_path << endl;
+    vector<pair<int, int>> shortest_path = BFS( height_map, start, end, m, n );
+    cout << shortest_path.size() - 1 << endl;
 
     return 0;
 }
