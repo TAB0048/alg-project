@@ -85,6 +85,16 @@ vector<pair<int, int>> BFS ( vector<char>& height_map, pair<int, int> start, pai
     return {};
 }
 
+void write_path( vector<char> height_map, vector<pair<int, int>> shortest_path, int n )
+{
+    cout << "Shortest path: " << endl;
+    for ( const auto& step : shortest_path )
+    {
+        cout << "[" << step.first << ", " << step.second << "], height: " 
+             << height_map[ step.first * n + step.second ] << endl;
+    }
+}
+
 
 int main()
 {
@@ -101,7 +111,10 @@ int main()
     read_data( input_file, height_map, start, end, m, n );
 
     vector<pair<int, int>> shortest_path = BFS( height_map, start, end, m, n );
-    cout << shortest_path.size() - 1 << endl;
+    
+    write_path( height_map, shortest_path, n );
+    
+    cout << "Path length: " << shortest_path.size() - 1 << endl;
 
     return 0;
 }
