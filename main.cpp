@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void read_data( ifstream& input_file, vector<char>& height_map,pair<int, int> start, pair<int, int> end,
+void read_data( ifstream& input_file, vector<char>& height_map,pair<int, int>& start, pair<int, int>& end,
                 int& m, int& n )
 {
     input_file >> m >> n;
