@@ -6,55 +6,63 @@
 
 using namespace std;
 
-void read_data( ifstream& input_file, vector<char>& height_map,pair<int, int>& start, pair<int, int>& end,
-                int& m, int& n )
+struct Point
+{
+    int x;
+    int y;
+    char val;
+};
+
+void read_data( ifstream& input_file, vector<Point>& height_map, Point& start, Point& end, int& m, int& n )
 {
     input_file >> m >> n;
 
-    for ( int i = 0; i < m * n; i++ ) {
-        char c;
-        input_file >> c;
+    for ( int i = 0; i < m; i++ ) {
+        for ( int j = 0; j < n; j++ ) {
+            char c;
+            input_file >> c;
 
-        if ( c == 'S' ) {
-            c = 'a';
-            start = {i / n, i % n };
-        }
+            if ( c == 'S' ) {
+                c = 'a';
+                start = {i, j, 'a'};
+            }
         
-        if ( c == 'E' ) {
-            c = 'z';
-            end = {i / n, i % n };
-        }
+            if ( c == 'E' ) {
+                c = 'z';
+                end = {i, j, 'z'};
+            }
 
-        height_map.push_back(c);
+            height_map.push_back( {i, j, c} );
+        }
     }
 }
 
-vector<pair<int, int>> BFS ( vector<char>& height_map, pair<int, int> start, pair<int, int> end, int m, int n )
+vector<Point> BFS ( vector<Point>& height_map, Point start, Point end, int m, int n )
 {
     // initialize queue
-    queue<pair<int, int>> q;
+    queue<Point> q;
     vector<bool> visited ( m * n, false );
 
     // initialize previously visited nodes
-    vector<pair<int, int>> previous ( m * n, {-1, -1} );
+    vector<Point> previous ( m * n, {-1, -1} );
 
     // add start to the queue
     q.push( start );
-    visited[ start.first * n + start.second ] = true;
+    visited[ start.x * n + start.y ] = true;
 
     // moves: up, down, left, right
     vector<pair<int, int>> moves = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
 
     while ( !q.empty() ) {
-        pair<int, int> current = q.front();
+        Point current = q.front();
         q.pop();
 
         // if at end, return distance
-        if ( current == end ) {
-            vector<pair<int, int>> path;
-            while ( current != start ) {
+        if ( current.x == end.x && current.y == end.y ) {
+            vector<Point> path;
+            while ( current.x != start.x || current.y != start.y ) {
                 path.push_back(current);
-                current = previous[ current.first * n + current.second ];
+                current = previous[ current.x * n + current.y ];
             }
             path.push_back(start);
             reverse( path.begin(), path.end() );
@@ -63,15 +71,15 @@ vector<pair<int, int>> BFS ( vector<char>& height_map, pair<int, int> start, pai
 
         // otherwise process neighbours
         for ( const auto& move : moves ) {
-            int row = current.first + move.first;
-            int col = current.second + move.second;
+            int row = current.x + move.first;
+            int col = current.y + move.second;
 
             int new_idx = row * n + col;
-            int curr_idx = current.first * n + current.second;
+            int curr_idx = current.x * n + current.y;
 
             if ( row >= 0 && row < m && col >= 0 && col < n 
-                && ( height_map[ new_idx ] == height_map[ curr_idx ]
-                  || height_map[ new_idx ] - height_map[ curr_idx ] == 1 ) 
+                && ( height_map[ new_idx ].val == height_map[ curr_idx ].val
+                  || height_map[ new_idx ].val - height_map[ curr_idx ].val == 1 ) 
                 && visited[ new_idx ] == false ) {
                 
                 q.push( {row, col} ); // add to the queue
@@ -85,13 +93,12 @@ vector<pair<int, int>> BFS ( vector<char>& height_map, pair<int, int> start, pai
     return {};
 }
 
-void write_path( vector<char> height_map, vector<pair<int, int>> shortest_path, int n )
+void write_path( vector<Point> height_map, vector<Point> shortest_path, int n )
 {
     cout << "Shortest path: " << endl;
     for ( const auto& step : shortest_path )
     {
-        cout << "[" << step.first << ", " << step.second << "], height: " 
-             << height_map[ step.first * n + step.second ] << endl;
+        cout << "[" << step.x << ", " << step.y << "], height: " << height_map[ step.x * n + step.y ].val << endl;
     }
 }
 
@@ -105,12 +112,12 @@ int main()
     }
 
     int m, n;
-    vector<char> height_map;
-    pair<int, int> start, end;
+    vector<Point> height_map;
+    Point start, end;
 
     read_data( input_file, height_map, start, end, m, n );
 
-    vector<pair<int, int>> shortest_path = BFS( height_map, start, end, m, n );
+    vector<Point> shortest_path = BFS( height_map, start, end, m, n );
     
     write_path( height_map, shortest_path, n );
     
