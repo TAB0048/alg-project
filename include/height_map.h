@@ -45,3 +45,10 @@ std::vector<Point> BFS ( std::vector<Point>& height_map, Point start, Point end,
   \param n Number of columns in the height map.
 */
 void write_path( std::vector<Point> height_map, std::vector<Point> shortest_path, int n );
+
+
+//! Function to write the length of the shortest path. 
+/*!
+  \param shortest_path Vector representing the shortest path.
+*/
+void get_path_length( std::vector<Point> shortest_path );

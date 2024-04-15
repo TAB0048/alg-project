@@ -97,9 +97,23 @@ std::vector<Point> BFS ( std::vector<Point>& height_map, Point start, Point end,
 void write_path( std::vector<Point> height_map, std::vector<Point> shortest_path, int n )
 {
     std::cout << "Shortest path: " << std::endl;
+    
+    if ( shortest_path.size() == 0 ) {
+        std::cout << "Path doesn't exist." << std::endl;
+        return;
+    }
+
     for ( const auto& point : shortest_path )
     {
         std::cout << "[" << point.x << ", " << point.y << "], height: " 
              << height_map[ point.x * n + point.y ].val << std::endl;
     }
+}
+
+void get_path_length( std::vector<Point> shortest_path )
+{
+    if ( shortest_path.size() == 0 )
+        std::cout << "Path length: 0" << std::endl;
+    else
+        std::cout << "Path length: " << shortest_path.size() - 1 << std::endl;
 }

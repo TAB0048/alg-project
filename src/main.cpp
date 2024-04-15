@@ -22,7 +22,7 @@ int main()
     
     write_path( height_map, shortest_path, n );
     
-    cout << "Path length: " << shortest_path.size() - 1 << endl;
+    get_path_length( shortest_path );
 
     return 0;
 }
