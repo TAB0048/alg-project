@@ -1,0 +1,15 @@
+# Project information
+PROJECT_NAME           = "height_map"
+PROJECT_NUMBER         = 
+PROJECT_BRIEF          = "Short description of the project"
+OUTPUT_DIRECTORY       = ./doc
+
+# Input
+INPUT                  = ./src ./include
+RECURSIVE              = YES
+EXCLUDE                = ./build
+
+# Configuration options
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_XML           = NO
