@@ -4,7 +4,6 @@
 #include <queue>
 #include <algorithm>
 
-//! Function for reading data from an input file. 
 void read_data( std::ifstream& input_file, std::vector<Point>& height_map, Point& start, Point& end, int& m, int& n )
 {
     input_file >> m >> n;
@@ -29,14 +28,6 @@ void read_data( std::ifstream& input_file, std::vector<Point>& height_map, Point
     }
 }
 
-//! BFS algorithm to find the shortest path from the start point to the end point.
-//! This function implements the Breadth-First Search (BFS) algorithm to find the shortest path from the start point to the end point.
-//! @param height_map The height map.
-//! @param start The start point.
-//! @param end The end point.
-//! @param m The number of rows in the height map.
-//! @param n The number of columns in the height map.
-//! @return The shortest path as a vector of Points.
 std::vector<Point> BFS ( std::vector<Point>& height_map, Point start, Point end, int m, int n )
 {
     // initialize queue
@@ -93,7 +84,6 @@ std::vector<Point> BFS ( std::vector<Point>& height_map, Point start, Point end,
     return {};
 }
 
-//! Function to write the found path. 
 void write_path( std::vector<Point> height_map, std::vector<Point> shortest_path, int n )
 {
     std::cout << "Shortest path: " << std::endl;

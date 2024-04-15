@@ -1,21 +1,30 @@
 var indexSectionsWithContent =
 {
-  0: "pvxy",
+  0: "bhmprtvwxy",
   1: "p",
-  2: "vxy"
+  2: "hmr",
+  3: "bmrw",
+  4: "vxy",
+  5: "t"
 };
 
 var indexSectionNames =
 {
   0: "all",
   1: "classes",
-  2: "variables"
+  2: "files",
+  3: "functions",
+  4: "variables",
+  5: "pages"
 };
 
 var indexSectionLabels =
 {
   0: "All",
   1: "Classes",
-  2: "Variables"
+  2: "Files",
+  3: "Functions",
+  4: "Variables",
+  5: "Pages"
 };
 
