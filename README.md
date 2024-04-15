@@ -25,8 +25,12 @@ make
 
 ## Documentation
 
-To generate documentation using Doxygen, follow these steps:
+Tto generate documentation using Doxygen, follow these steps:
 
 1. Make sure Doxygen is installed on your system.
 2. In the project directory, run: `doxygen Doxyfile`.
 3. Open the generated HTML documentation located in the `doc` directory.
+
+## Testing 
+
+This project contains both original testing data (HeightMap1.txt) and two other testing files (HeightMap2.txt and HeightMap3.txt).

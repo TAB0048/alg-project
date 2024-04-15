@@ -7,12 +7,13 @@
 std::string get_file_name() {
     std::string file_name;
     
-    std::cout << "Enter a file name: " << std::endl;
+    std::cout << "Enter a file name (e.g. HeightMap1.txt): " << std::endl;
     std::cin >> file_name;
 
     file_name = "../tests/" + file_name;
     return file_name;
 }
+
 
 void read_data( std::ifstream& input_file, std::vector<Point>& height_map, Point& start, Point& end, int& m, int& n )
 {
@@ -44,7 +45,7 @@ std::vector<Point> BFS ( std::vector<Point>& height_map, Point start, Point end,
     std::queue<Point> q;
     std::vector<bool> visited ( m * n, false );
 
-    // initialize previously visited nodes
+    // initialize previously visited Points
     std::vector<Point> previous ( m * n, {-1, -1} );
 
     // add start to the queue
@@ -61,10 +62,12 @@ std::vector<Point> BFS ( std::vector<Point>& height_map, Point start, Point end,
         // if at end, return distance
         if ( current.x == end.x && current.y == end.y ) {
             std::vector<Point> path;
+
             while ( current.x != start.x || current.y != start.y ) {
                 path.push_back(current);
                 current = previous[ current.x * n + current.y ];
             }
+            
             path.push_back(start);
             reverse( path.begin(), path.end() );
             return path;
@@ -85,7 +88,7 @@ std::vector<Point> BFS ( std::vector<Point>& height_map, Point start, Point end,
                 
                 q.push( {row, col} ); // add to the queue
                 visited[ new_idx ] = true; // mark as visited
-                previous[ new_idx ] = current; // update previous node
+                previous[ new_idx ] = current; // update previous Point
             }
         }
     }
@@ -93,6 +96,7 @@ std::vector<Point> BFS ( std::vector<Point>& height_map, Point start, Point end,
     // return empty vector if not found
     return {};
 }
+
 
 void write_path( std::vector<Point> height_map, std::vector<Point> shortest_path, int n )
 {

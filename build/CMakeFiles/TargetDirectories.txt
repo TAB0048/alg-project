@@ -1,3 +1,0 @@
-/home/alexandr/Dokumenty/alg-project/build/CMakeFiles/height_map.dir
-/home/alexandr/Dokumenty/alg-project/build/CMakeFiles/edit_cache.dir
-/home/alexandr/Dokumenty/alg-project/build/CMakeFiles/rebuild_cache.dir
