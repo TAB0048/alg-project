@@ -4,7 +4,9 @@ using namespace std;
 
 int main()
 {
-    ifstream input_file ( "../tests/HeightMap1.txt" );
+    string file_name = get_file_name();
+
+    ifstream input_file ( file_name );
     if ( !input_file ) {
         cerr << "Couldn't open input file." << endl;
         return -1;

@@ -4,6 +4,16 @@
 #include <queue>
 #include <algorithm>
 
+std::string get_file_name() {
+    std::string file_name;
+    
+    std::cout << "Enter a file name: " << std::endl;
+    std::cin >> file_name;
+
+    file_name = "../tests/" + file_name;
+    return file_name;
+}
+
 void read_data( std::ifstream& input_file, std::vector<Point>& height_map, Point& start, Point& end, int& m, int& n )
 {
     input_file >> m >> n;

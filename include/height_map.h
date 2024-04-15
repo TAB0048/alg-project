@@ -11,6 +11,9 @@ struct Point
     char val;   //!< value (height) of the cell
 };
 
+//! Function to get the name of the file with testing data. 
+std::string get_file_name();
+
 //! Function for reading data from an input file and initializing the height map.
 /*!
   \param input_file Input stream containing data to be read.

@@ -13,7 +13,7 @@ To build and run this project, you need:
 
 ## Build Instructions
 
-To build this project, navigate to the project directory and execuse these commands: 
+To build this project, navigate to the project directory and execute these commands: 
 
 ```
 mkdir build
