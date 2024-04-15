@@ -15,11 +15,11 @@ To build and run this project, you need:
 
 To build this project, navigate to the project directory and execuse these commands: 
 
-`mkdir build`
-`cd build`
-`cmake ..`
-`make`
-`./height_map`
+mkdir build
+cd build
+cmake ..
+make
+./height_map
 
 ## Documentation
 
