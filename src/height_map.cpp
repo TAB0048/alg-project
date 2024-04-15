@@ -1,19 +1,10 @@
+#include "height_map.h"
+
 #include <iostream>
-#include <fstream>
-#include <vector>
 #include <queue>
 #include <algorithm>
 
-using namespace std;
-
-struct Point
-{
-    int x;
-    int y;
-    char val;
-};
-
-void read_data( ifstream& input_file, vector<Point>& height_map, Point& start, Point& end, int& m, int& n )
+void read_data( std::ifstream& input_file, std::vector<Point>& height_map, Point& start, Point& end, int& m, int& n )
 {
     input_file >> m >> n;
 
@@ -37,21 +28,21 @@ void read_data( ifstream& input_file, vector<Point>& height_map, Point& start, P
     }
 }
 
-vector<Point> BFS ( vector<Point>& height_map, Point start, Point end, int m, int n )
+std::vector<Point> BFS ( std::vector<Point>& height_map, Point start, Point end, int m, int n )
 {
     // initialize queue
-    queue<Point> q;
-    vector<bool> visited ( m * n, false );
+    std::queue<Point> q;
+    std::vector<bool> visited ( m * n, false );
 
     // initialize previously visited nodes
-    vector<Point> previous ( m * n, {-1, -1} );
+    std::vector<Point> previous ( m * n, {-1, -1} );
 
     // add start to the queue
     q.push( start );
     visited[ start.x * n + start.y ] = true;
 
     // moves: up, down, left, right
-    vector<pair<int, int>> moves = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
+    std::vector<std::pair<int, int>> moves = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
 
     while ( !q.empty() ) {
         Point current = q.front();
@@ -59,7 +50,7 @@ vector<Point> BFS ( vector<Point>& height_map, Point start, Point end, int m, in
 
         // if at end, return distance
         if ( current.x == end.x && current.y == end.y ) {
-            vector<Point> path;
+            std::vector<Point> path;
             while ( current.x != start.x || current.y != start.y ) {
                 path.push_back(current);
                 current = previous[ current.x * n + current.y ];
@@ -93,35 +84,12 @@ vector<Point> BFS ( vector<Point>& height_map, Point start, Point end, int m, in
     return {};
 }
 
-void write_path( vector<Point> height_map, vector<Point> shortest_path, int n )
+void write_path( std::vector<Point> height_map, std::vector<Point> shortest_path, int n )
 {
-    cout << "Shortest path: " << endl;
-    for ( const auto& step : shortest_path )
+    std::cout << "Shortest path: " << std::endl;
+    for ( const auto& point : shortest_path )
     {
-        cout << "[" << step.x << ", " << step.y << "], height: " << height_map[ step.x * n + step.y ].val << endl;
+        std::cout << "[" << point.x << ", " << point.y << "], height: " 
+             << height_map[ point.x * n + point.y ].val << std::endl;
     }
-}
-
-
-int main()
-{
-    ifstream input_file ( "HeightMap1.txt" );
-    if ( !input_file ) {
-        cerr << "Couldn't open input file." << endl;
-        return -1;
-    }
-
-    int m, n;
-    vector<Point> height_map;
-    Point start, end;
-
-    read_data( input_file, height_map, start, end, m, n );
-
-    vector<Point> shortest_path = BFS( height_map, start, end, m, n );
-    
-    write_path( height_map, shortest_path, n );
-    
-    cout << "Path length: " << shortest_path.size() - 1 << endl;
-
-    return 0;
 }
