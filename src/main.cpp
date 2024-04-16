@@ -22,7 +22,7 @@ int main()
     
     write_path( height_map, shortest_path, n );
     
-    get_path_length( shortest_path );
+    write_path_length( shortest_path );
 
     return 0;
 }

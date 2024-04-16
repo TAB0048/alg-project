@@ -39,6 +39,40 @@ void read_data( std::ifstream& input_file, std::vector<Point>& height_map, Point
     }
 }
 
+
+int get_index ( int x, int y, int cols ) 
+{
+    return x * cols + y;
+}
+
+
+bool equal_coordinates ( Point a, Point b ) 
+{
+    if ( a.x == b.x && a.y == b.y )
+        return true;
+    else
+        return false;
+}
+
+
+bool valid_coordinates ( int x, int y, int rows, int cols )
+{
+    if ( x >= 0 && x < rows && y >= 0 && y < cols ) 
+        return true;
+    else
+        return false;
+}
+
+
+bool allowed_height_difference ( std::vector<Point>& height_map, int curr_idx, int new_idx )
+{
+    if ( height_map[ new_idx ].val == height_map[ curr_idx ].val
+      || height_map[ new_idx ].val - height_map[ curr_idx ].val == 1 ) 
+      return true;
+    else 
+        return false;
+}
+
 std::vector<Point> BFS ( std::vector<Point>& height_map, Point start, Point end, int m, int n )
 {
     // initialize queue
@@ -50,7 +84,8 @@ std::vector<Point> BFS ( std::vector<Point>& height_map, Point start, Point end,
 
     // add start to the queue
     q.push( start );
-    visited[ start.x * n + start.y ] = true;
+    int idx = get_index( start.x, start.y, n );
+    visited[ idx ] = true;
 
     // moves: up, down, left, right
     std::vector<std::pair<int, int>> moves = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
@@ -60,12 +95,13 @@ std::vector<Point> BFS ( std::vector<Point>& height_map, Point start, Point end,
         q.pop();
 
         // if at end, return distance
-        if ( current.x == end.x && current.y == end.y ) {
+        if ( equal_coordinates( current, end ) ) {
             std::vector<Point> path;
 
-            while ( current.x != start.x || current.y != start.y ) {
+            while ( !equal_coordinates( current, start ) ) {
                 path.push_back(current);
-                current = previous[ current.x * n + current.y ];
+                int curr_idx = get_index( current.x, current.y, n );
+                current = previous[ curr_idx ];
             }
             
             path.push_back(start);
@@ -78,13 +114,12 @@ std::vector<Point> BFS ( std::vector<Point>& height_map, Point start, Point end,
             int row = current.x + move.first;
             int col = current.y + move.second;
 
-            int new_idx = row * n + col;
-            int curr_idx = current.x * n + current.y;
+            int new_idx = get_index( current.x + move.first, current.y + move.second, n );
+            int curr_idx = get_index( current.x, current.y, n );
 
-            if ( row >= 0 && row < m && col >= 0 && col < n 
-                && ( height_map[ new_idx ].val == height_map[ curr_idx ].val
-                  || height_map[ new_idx ].val - height_map[ curr_idx ].val == 1 ) 
-                && visited[ new_idx ] == false ) {
+            if ( valid_coordinates( row, col, m, n ) 
+              && allowed_height_difference( height_map, curr_idx, new_idx )
+              && !visited[ new_idx ] ) {
                 
                 q.push( {row, col} ); // add to the queue
                 visited[ new_idx ] = true; // mark as visited
@@ -114,7 +149,7 @@ void write_path( std::vector<Point> height_map, std::vector<Point> shortest_path
     }
 }
 
-void get_path_length( std::vector<Point> shortest_path )
+void write_path_length( std::vector<Point> shortest_path )
 {
     if ( shortest_path.size() == 0 )
         std::cout << "Path length: 0" << std::endl;
