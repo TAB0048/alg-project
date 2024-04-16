@@ -4,6 +4,7 @@
 #include <queue>
 #include <algorithm>
 
+//-------------------------------------------------------------------------------
 std::string get_file_name() {
     std::string file_name;
     
@@ -14,7 +15,7 @@ std::string get_file_name() {
     return file_name;
 }
 
-
+//-------------------------------------------------------------------------------
 void read_data( std::ifstream& input_file, std::vector<Point>& height_map, Point& start, Point& end, int& m, int& n )
 {
     input_file >> m >> n;
@@ -39,13 +40,13 @@ void read_data( std::ifstream& input_file, std::vector<Point>& height_map, Point
     }
 }
 
-
+//-------------------------------------------------------------------------------
 int get_index ( int x, int y, int cols ) 
 {
     return x * cols + y;
 }
 
-
+//-------------------------------------------------------------------------------
 bool equal_coordinates ( Point a, Point b ) 
 {
     if ( a.x == b.x && a.y == b.y )
@@ -54,7 +55,7 @@ bool equal_coordinates ( Point a, Point b )
         return false;
 }
 
-
+//-------------------------------------------------------------------------------
 bool valid_coordinates ( int x, int y, int rows, int cols )
 {
     if ( x >= 0 && x < rows && y >= 0 && y < cols ) 
@@ -63,7 +64,7 @@ bool valid_coordinates ( int x, int y, int rows, int cols )
         return false;
 }
 
-
+//-------------------------------------------------------------------------------
 bool allowed_height_difference ( std::vector<Point>& height_map, int curr_idx, int new_idx )
 {
     if ( height_map[ new_idx ].val == height_map[ curr_idx ].val
@@ -73,6 +74,7 @@ bool allowed_height_difference ( std::vector<Point>& height_map, int curr_idx, i
         return false;
 }
 
+//-------------------------------------------------------------------------------
 std::vector<Point> BFS ( std::vector<Point>& height_map, Point start, Point end, int m, int n )
 {
     // initialize queue
@@ -114,7 +116,7 @@ std::vector<Point> BFS ( std::vector<Point>& height_map, Point start, Point end,
             int row = current.x + move.first;
             int col = current.y + move.second;
 
-            int new_idx = get_index( current.x + move.first, current.y + move.second, n );
+            int new_idx = get_index( row, col, n );
             int curr_idx = get_index( current.x, current.y, n );
 
             if ( valid_coordinates( row, col, m, n ) 
@@ -132,7 +134,7 @@ std::vector<Point> BFS ( std::vector<Point>& height_map, Point start, Point end,
     return {};
 }
 
-
+//-------------------------------------------------------------------------------
 void write_path( std::vector<Point> height_map, std::vector<Point> shortest_path, int n )
 {
     std::cout << "Shortest path: " << std::endl;
@@ -144,11 +146,13 @@ void write_path( std::vector<Point> height_map, std::vector<Point> shortest_path
 
     for ( const auto& point : shortest_path )
     {
+        int idx = get_index( point.x, point.y, n );
         std::cout << "[" << point.x << ", " << point.y << "], height: " 
-             << height_map[ point.x * n + point.y ].val << std::endl;
+             << height_map[ idx ].val << std::endl;
     }
 }
 
+//-------------------------------------------------------------------------------
 void write_path_length( std::vector<Point> shortest_path )
 {
     if ( shortest_path.size() == 0 )
